@@ -1,21 +1,30 @@
-import {
-  View,
-  Text,
-  StyleSheet,
-  StatusBar,
-  InteractionManager,
-} from 'react-native';
-import React, {useLayoutEffect, useEffect, useRef} from 'react';
-import {Button, TextInput} from 'react-native-paper';
+import {View, Text, StyleSheet, StatusBar} from 'react-native';
+import React, {useLayoutEffect, useState, useRef} from 'react';
+import {Button, TextInput, Portal, HelperText} from 'react-native-paper';
+import PhoneNoConfirmationDialog from '../components/PhoneNoConfirmationDialog';
 
 const PhoneNoScreen = ({navigation}) => {
+  const mobileRef = useRef();
+  const [visible, setVisible] = useState(false);
+  const [error, setError] = useState(false);
+  const [mobileNo, setMobileNo] = useState(0);
+
   useLayoutEffect(() => {
     navigation.setOptions({
       headerShown: false,
     });
   }, [navigation]);
 
-  const mobileRef = useRef();
+  const onConfirmationDialog = () => {
+    setVisible(true);
+  };
+
+  const onConfirmationError = () => {
+    setError(true);
+    setTimeout(() => {
+      setError(false);
+    }, 2000);
+  };
 
   return (
     <>
@@ -41,16 +50,37 @@ const PhoneNoScreen = ({navigation}) => {
               ref={mobileRef}
               mode="outlined"
               label="Phone No"
+              value={mobileNo}
+              onChangeText={mobileNo => setMobileNo(mobileNo)}
               onLayout={() => mobileRef.current.focus()}
               keyboardType="numeric"></TextInput>
+            <HelperText type="error" visible={error}>
+              Mobile number should has 9 digits
+            </HelperText>
           </View>
         </View>
         <View style={styles.btnContainer}>
-          <Button style={styles.btn} mode="contained">
+          <Button
+            style={styles.btn}
+            mode="contained"
+            onPress={
+              mobileNo && mobileNo.length === 9
+                ? onConfirmationDialog
+                : onConfirmationError
+            }>
             NEXT
           </Button>
         </View>
       </View>
+
+      {/* Confirmation Dialog */}
+      <Portal>
+        <PhoneNoConfirmationDialog
+          visible={visible}
+          setVisible={setVisible}
+          mobileNo={mobileNo}
+        />
+      </Portal>
     </>
   );
 };
