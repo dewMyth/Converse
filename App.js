@@ -3,15 +3,27 @@ import React from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 
 import WelcomeScreen from './screens/WelcomeScreen';
-import {View} from 'react-native';
+import PhoneNoScreen from './screens/PhoneNoScreen';
+import Chats from './screens/Chats';
 
 const App = () => {
   const Stack = createNativeStackNavigator();
 
+  const isSignedIn = false;
+
   return (
     <>
       <Stack.Navigator>
-        <Stack.Screen name="Welcome" component={WelcomeScreen} />
+        {isSignedIn ? (
+          <>
+            <Stack.Screen name="Chats" component={Chats} />
+          </>
+        ) : (
+          <>
+            <Stack.Screen name="Welcome" component={WelcomeScreen} />
+            <Stack.Screen name="PhoneNo" component={PhoneNoScreen} />
+          </>
+        )}
       </Stack.Navigator>
     </>
   );

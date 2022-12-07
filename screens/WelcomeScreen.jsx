@@ -1,4 +1,4 @@
-import {View, Text, StyleSheet, Image} from 'react-native';
+import {View, Text, StyleSheet, Image, StatusBar} from 'react-native';
 import React, {useLayoutEffect} from 'react';
 import {Button} from 'react-native-paper';
 
@@ -11,6 +11,7 @@ const WelcomeScreen = ({navigation}) => {
 
   return (
     <>
+      <StatusBar barStyle="dark-content" backgroundColor="#fff" />
       <View style={styles.container}>
         <View style={styles.titleContainer}>
           <Text style={styles.title}>Welcome to Converse</Text>
@@ -29,7 +30,12 @@ const WelcomeScreen = ({navigation}) => {
           </Text>
         </View>
         <View style={styles.btnContainer}>
-          <Button mode="contained" style={styles.btn}>
+          <Button
+            mode="contained"
+            style={styles.btn}
+            onPress={() => {
+              navigation.navigate('PhoneNo');
+            }}>
             Agree and continue
           </Button>
         </View>
@@ -75,6 +81,7 @@ const styles = StyleSheet.create({
   btn: {
     backgroundColor: '#21005C',
     width: 300,
+    borderRadius: 5,
   },
 });
 
