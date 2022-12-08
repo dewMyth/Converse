@@ -5,6 +5,7 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import WelcomeScreen from './screens/WelcomeScreen';
 import PhoneNoScreen from './screens/PhoneNoScreen';
 import Chats from './screens/Chats';
+import VerifyOtpScreen from './screens/VerifyOtpScreen';
 
 const App = () => {
   const Stack = createNativeStackNavigator();
@@ -22,6 +23,7 @@ const App = () => {
           <>
             <Stack.Screen name="Welcome" component={WelcomeScreen} />
             <Stack.Screen name="PhoneNo" component={PhoneNoScreen} />
+            <Stack.Screen name="VerifyOtp" component={VerifyOtpScreen} />
           </>
         )}
       </Stack.Navigator>

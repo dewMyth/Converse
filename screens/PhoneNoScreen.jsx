@@ -26,6 +26,11 @@ const PhoneNoScreen = ({navigation}) => {
     }, 2000);
   };
 
+  const onPressOK = () => {
+    setVisible(false);
+    navigation.navigate('VerifyOtp', {mobileNo: mobileNo});
+  };
+
   return (
     <>
       <StatusBar barStyle="dark-content" backgroundColor="#fff" />
@@ -79,6 +84,7 @@ const PhoneNoScreen = ({navigation}) => {
           visible={visible}
           setVisible={setVisible}
           mobileNo={mobileNo}
+          onPressOK={onPressOK}
         />
       </Portal>
     </>

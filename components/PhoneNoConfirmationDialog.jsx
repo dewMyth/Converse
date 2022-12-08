@@ -3,7 +3,12 @@ import React from 'react';
 
 import {Dialog, Paragraph, Button} from 'react-native-paper';
 
-const PhoneNoConfirmationDialog = ({visible, setVisible, mobileNo}) => {
+const PhoneNoConfirmationDialog = ({
+  visible,
+  setVisible,
+  mobileNo,
+  onPressOK,
+}) => {
   const hideDialog = () => setVisible(false);
 
   return (
@@ -29,7 +34,7 @@ const PhoneNoConfirmationDialog = ({visible, setVisible, mobileNo}) => {
         </Dialog.Content>
         <Dialog.Actions style={styles.btnContainer}>
           <Button onPress={hideDialog}>EDIT</Button>
-          <Button onPress={hideDialog}>OK</Button>
+          <Button onPress={onPressOK}>OK</Button>
         </Dialog.Actions>
       </Dialog>
     </>
