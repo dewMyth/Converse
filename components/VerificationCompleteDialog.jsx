@@ -27,8 +27,8 @@ const VerificationCompleteDialog = ({
             is verified!
           </Paragraph>
         </Dialog.Content>
-        <Dialog.Actions>
-          <Button onPress={onVerificationComplete}>Ok</Button>
+        <Dialog.Actions style={styles.btnContainer}>
+          <Button onPress={onVerificationComplete}>OK</Button>
         </Dialog.Actions>
       </Dialog>
     </>

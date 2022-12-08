@@ -1,6 +1,8 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
+
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import WelcomeScreen from './screens/WelcomeScreen';
 import PhoneNoScreen from './screens/PhoneNoScreen';
@@ -9,14 +11,27 @@ import VerifyOtpScreen from './screens/VerifyOtpScreen';
 import CreateProfileScreen from './screens/CreateProfileScreen';
 
 const App = () => {
-  const Stack = createNativeStackNavigator();
+  const [user, setUser] = useState(null);
+  useEffect(() => {
+    const getData = async () => {
+      try {
+        const jsonValue = await AsyncStorage.getItem('@user');
+        return jsonValue != null ? JSON.parse(jsonValue) : null;
+      } catch (e) {
+        // error reading value
+      }
+    };
+    getData().then(response => {
+      setUser(response);
+    });
+  }, [user]);
 
-  const isSignedIn = false;
+  const Stack = createNativeStackNavigator();
 
   return (
     <>
       <Stack.Navigator>
-        {isSignedIn ? (
+        {user != null ? (
           <>
             <Stack.Screen name="Chats" component={Chats} />
           </>
