@@ -9,6 +9,7 @@ import PhoneNoScreen from './screens/PhoneNoScreen';
 import Chats from './screens/Chats';
 import VerifyOtpScreen from './screens/VerifyOtpScreen';
 import CreateProfileScreen from './screens/CreateProfileScreen';
+import HomeScreen from './screens/HomeScreen';
 
 const App = () => {
   const [user, setUser] = useState(null);
@@ -33,7 +34,7 @@ const App = () => {
       <Stack.Navigator>
         {user != null ? (
           <>
-            <Stack.Screen name="Chats" component={Chats} />
+            <Stack.Screen name="Home" component={HomeScreen} />
           </>
         ) : (
           <>
