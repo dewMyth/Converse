@@ -18,6 +18,7 @@ const VerifyOtpScreen = ({navigation, route}) => {
   }, [navigation]);
 
   const onVerificationComplete = () => {
+    setVisible(false);
     navigation.navigate('CreateProfile', {mobileNo: mobileNo});
   };
 

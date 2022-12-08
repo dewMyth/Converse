@@ -1,6 +1,6 @@
 import {View, Text, StyleSheet} from 'react-native';
 import React, {useEffect} from 'react';
-import {Paragraph, Dialog, Portal} from 'react-native-paper';
+import {Paragraph, Dialog, Button} from 'react-native-paper';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
 const VerificationCompleteDialog = ({
@@ -9,15 +9,6 @@ const VerificationCompleteDialog = ({
   mobileNo,
   onVerificationComplete,
 }) => {
-  useEffect(() => {
-    setTimeout(() => {
-      hideDialog();
-    }, 500);
-    return () => {
-      onVerificationComplete();
-    };
-  }, [visible]);
-
   return (
     <>
       <Dialog visible={visible} onDismiss={hideDialog}>
@@ -36,6 +27,9 @@ const VerificationCompleteDialog = ({
             is verified!
           </Paragraph>
         </Dialog.Content>
+        <Dialog.Actions>
+          <Button onPress={onVerificationComplete}>Ok</Button>
+        </Dialog.Actions>
       </Dialog>
     </>
   );
