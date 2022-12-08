@@ -6,6 +6,7 @@ import WelcomeScreen from './screens/WelcomeScreen';
 import PhoneNoScreen from './screens/PhoneNoScreen';
 import Chats from './screens/Chats';
 import VerifyOtpScreen from './screens/VerifyOtpScreen';
+import CreateProfileScreen from './screens/CreateProfileScreen';
 
 const App = () => {
   const Stack = createNativeStackNavigator();
@@ -24,6 +25,10 @@ const App = () => {
             <Stack.Screen name="Welcome" component={WelcomeScreen} />
             <Stack.Screen name="PhoneNo" component={PhoneNoScreen} />
             <Stack.Screen name="VerifyOtp" component={VerifyOtpScreen} />
+            <Stack.Screen
+              name="CreateProfile"
+              component={CreateProfileScreen}
+            />
           </>
         )}
       </Stack.Navigator>

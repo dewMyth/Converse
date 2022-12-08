@@ -17,6 +17,10 @@ const VerifyOtpScreen = ({navigation, route}) => {
     });
   }, [navigation]);
 
+  const onVerificationComplete = () => {
+    navigation.navigate('CreateProfile', {mobileNo: mobileNo});
+  };
+
   return (
     <>
       <View style={styles.container}>
@@ -63,6 +67,7 @@ const VerifyOtpScreen = ({navigation, route}) => {
           visible={visible}
           hideDialog={hideDialog}
           mobileNo={mobileNo}
+          onVerificationComplete={onVerificationComplete}
         />
       </Portal>
     </>
