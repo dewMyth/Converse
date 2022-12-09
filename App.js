@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useContext} from 'react';
 
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 
@@ -11,28 +11,17 @@ import VerifyOtpScreen from './screens/VerifyOtpScreen';
 import CreateProfileScreen from './screens/CreateProfileScreen';
 import HomeScreen from './screens/HomeScreen';
 
-const App = () => {
-  const [user, setUser] = useState(null);
-  useEffect(() => {
-    const getData = async () => {
-      try {
-        const jsonValue = await AsyncStorage.getItem('@user');
-        return jsonValue != null ? JSON.parse(jsonValue) : null;
-      } catch (e) {
-        // error reading value
-      }
-    };
-    getData().then(response => {
-      setUser(response);
-    });
-  }, []);
+import {useAuthContext} from './hooks/useAuthContext';
 
+const App = () => {
   const Stack = createNativeStackNavigator();
+
+  const {user} = useAuthContext();
 
   return (
     <>
       <Stack.Navigator>
-        {user != null ? (
+        {user ? (
           <>
             <Stack.Screen name="Home" component={HomeScreen} />
           </>

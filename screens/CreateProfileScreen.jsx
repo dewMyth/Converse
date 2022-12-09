@@ -11,10 +11,12 @@ import {Button, TextInput} from 'react-native-paper';
 
 import {launchImageLibrary} from 'react-native-image-picker';
 
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import {useLogin} from '../hooks/useLogin';
 
 const CreateProfileScreen = ({navigation, route}) => {
   const mobileNo = route.params.mobileNo;
+
+  const {login} = useLogin();
 
   const requestPermission = async () => {
     try {
@@ -79,16 +81,10 @@ const CreateProfileScreen = ({navigation, route}) => {
   const onHandleNext = async () => {
     const user = {
       username: username,
-      imgThumbnailPath: imgThumbnailPath,
       mobileNo: mobileNo,
     };
 
-    try {
-      const jsonUser = JSON.stringify(user);
-      await AsyncStorage.setItem('@user', jsonUser);
-    } catch (e) {
-      // saving error
-    }
+    await login(user);
   };
 
   return (
