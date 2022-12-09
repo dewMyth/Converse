@@ -25,7 +25,7 @@ const App = () => {
     getData().then(response => {
       setUser(response);
     });
-  }, [user]);
+  }, []);
 
   const Stack = createNativeStackNavigator();
 
