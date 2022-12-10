@@ -2,11 +2,13 @@ import {View, Text, StyleSheet, StatusBar} from 'react-native';
 import React, {useLayoutEffect, useState, useRef} from 'react';
 import {Button, TextInput, Portal, HelperText} from 'react-native-paper';
 import PhoneNoConfirmationDialog from '../components/PhoneNoConfirmationDialog';
+import {baseUrl} from '../baseUrl';
 
 const PhoneNoScreen = ({navigation}) => {
   const mobileRef = useRef();
   const [visible, setVisible] = useState(false);
   const [error, setError] = useState(false);
+  const [errorMsg, setErrorMsg] = useState('');
   const [mobileNo, setMobileNo] = useState(0);
 
   useLayoutEffect(() => {
@@ -26,9 +28,38 @@ const PhoneNoScreen = ({navigation}) => {
     }, 2000);
   };
 
-  const onPressOK = () => {
+  const onPressOK = async () => {
     setVisible(false);
-    navigation.navigate('VerifyOtp', {mobileNo: mobileNo});
+
+    const credentials = {
+      countryCode: '94',
+      mobileNo: mobileNo,
+    };
+
+    console.log('credentials =>', JSON.stringify(credentials));
+    console.log('url =>', baseUrl + '/auth/send-otp');
+
+    const response = await fetch(baseUrl + '/auth/send-otp', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(credentials),
+    });
+
+    console.log('response =>', response);
+
+    const json = await response.json();
+
+    console.log('json =>', json);
+
+    if (!response.ok) {
+      setError(true);
+      setErrorMsg(json.message);
+    }
+    if (response.ok) {
+      navigation.navigate('VerifyOtp', {mobileNo: mobileNo});
+    }
   };
 
   return (
@@ -60,7 +91,7 @@ const PhoneNoScreen = ({navigation}) => {
               onLayout={() => mobileRef.current.focus()}
               keyboardType="numeric"></TextInput>
             <HelperText type="error" visible={error}>
-              Mobile number should has 9 digits
+              {errorMsg ? errorMsg : 'Mobile number should has 9 digits'}
             </HelperText>
           </View>
         </View>
