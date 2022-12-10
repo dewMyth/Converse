@@ -7,16 +7,17 @@ import {
   Text,
   TouchableOpacity,
 } from 'react-native';
-import {Button, TextInput} from 'react-native-paper';
+import {Button, TextInput, HelperText, Portal} from 'react-native-paper';
 
 import {launchImageLibrary} from 'react-native-image-picker';
 
 import {useLogin} from '../hooks/useLogin';
+import Loading from '../components/Loading';
 
 const CreateProfileScreen = ({navigation, route}) => {
   const mobileNo = route.params.mobileNo;
 
-  const {login} = useLogin();
+  const {login, isLoading, error} = useLogin();
 
   const requestPermission = async () => {
     try {
@@ -55,12 +56,6 @@ const CreateProfileScreen = ({navigation, route}) => {
 
   useEffect(() => {
     requestPermission();
-  }, []);
-
-  useLayoutEffect(() => {
-    navigation.setOptions({
-      headerShown: false,
-    });
   }, []);
 
   const [username, setUsername] = useState('');
@@ -120,13 +115,24 @@ const CreateProfileScreen = ({navigation, route}) => {
             underlineColorAndroid="transparent"
             style={styles.usernameInput}
           />
+          <HelperText type="error" visible={error}>
+            {error}
+          </HelperText>
         </View>
         <View style={styles.btnContainer}>
-          <Button style={styles.btn} mode="contained" onPress={onHandleNext}>
+          <Button
+            disabled={isLoading}
+            style={styles.btn}
+            mode="contained"
+            onPress={onHandleNext}>
             NEXT
           </Button>
         </View>
       </View>
+
+      <Portal>
+        <Loading visible={isLoading} />
+      </Portal>
     </>
   );
 };
