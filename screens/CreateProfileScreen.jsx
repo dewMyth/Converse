@@ -13,6 +13,7 @@ import {launchImageLibrary} from 'react-native-image-picker';
 
 import {useLogin} from '../hooks/useLogin';
 import Loading from '../components/Loading';
+import {baseUrl} from '../baseUrl';
 
 const CreateProfileScreen = ({navigation, route}) => {
   const mobileNo = route.params.mobileNo;
@@ -61,10 +62,18 @@ const CreateProfileScreen = ({navigation, route}) => {
   const [username, setUsername] = useState('');
   const [imgThumbnailPath, setImgThumbnailPath] = useState('');
 
+  // Image Data
+  const [uri, setUri] = useState('');
+  const [type, setType] = useState('');
+  const [name, setName] = useState('');
+
   const handleProfilePictureUpload = () => {
     launchImageLibrary({mediaType: 'photo'}, response => {
       if (!response.didCancel) {
         setImgThumbnailPath(response.assets[0].uri);
+        setUri(response.assets[0].uri);
+        setType(response.assets[0].type);
+        setName(response.assets[0].fileName);
       } else {
         setImgThumbnailPath('');
       }
@@ -74,10 +83,41 @@ const CreateProfileScreen = ({navigation, route}) => {
   };
 
   const onHandleNext = async () => {
-    try {
-      await login(username, mobileNo);
-    } catch (err) {
-      alert(err);
+    if (imgThumbnailPath !== '') {
+      const data = new FormData();
+      data.append('profilePicture', {
+        uri: uri,
+        type: type,
+        name: name,
+      });
+
+      console.log(baseUrl + '/file-upload/profile-picture');
+      try {
+        // Image upload
+        const config = {
+          method: 'POST',
+          headers: {
+            Accept: 'application/json',
+            'Content-Type': 'multipart/form-data',
+          },
+          body: data,
+        };
+        await fetch(baseUrl + '/file-upload/profile-picture', config).then(
+          response => {
+            return response.json().then(data => {
+              login(username, mobileNo, data.profilePictureName);
+            });
+          },
+        );
+      } catch (err) {
+        console.log(err);
+      }
+    } else {
+      try {
+        await login(username, mobileNo, imgThumbnailPath);
+      } catch (err) {
+        alert(err);
+      }
     }
   };
 

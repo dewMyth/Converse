@@ -10,13 +10,15 @@ export const useLogin = () => {
 
   const {dispatch} = useAuthContext();
 
-  const login = async (username, mobileNo) => {
-    const newUser = {username, mobileNo};
+  const login = async (username, mobileNo, profilePicture) => {
+    const newUser = {
+      username,
+      mobileNo,
+      profilePicture,
+    };
+
     setIsLoading(true);
     setError(null);
-
-    console.log(baseUrl + '/user/create');
-    console.log(newUser);
 
     const response = await fetch(baseUrl + '/user/create', {
       method: 'POST',
