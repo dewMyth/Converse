@@ -6,7 +6,6 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import WelcomeScreen from './screens/WelcomeScreen';
 import PhoneNoScreen from './screens/PhoneNoScreen';
-import Chats from './screens/Chats';
 import VerifyOtpScreen from './screens/VerifyOtpScreen';
 import CreateProfileScreen from './screens/CreateProfileScreen';
 import HomeScreen from './screens/HomeScreen';
@@ -20,7 +19,10 @@ const App = () => {
 
   return (
     <>
-      <Stack.Navigator>
+      <Stack.Navigator
+        screenOptions={{
+          headerShown: false,
+        }}>
         {user ? (
           <>
             <Stack.Screen name="Home" component={HomeScreen} />

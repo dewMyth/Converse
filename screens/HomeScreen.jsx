@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, {useState} from 'react';
 import {BottomNavigation, Text, FAB} from 'react-native-paper';
 
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
@@ -15,12 +15,8 @@ const StatusRoute = () => <Text>Status</Text>;
 const ContactsRoute = () => <Text>Contacts</Text>;
 
 const HomeScreen = ({navigation}) => {
-  navigation.setOptions({
-    headerShown: false,
-  });
-
-  const [index, setIndex] = React.useState(0);
-  const [routes] = React.useState([
+  const [index, setIndex] = useState(0);
+  const [routes] = useState([
     {
       key: 'chats',
       title: 'Chats',

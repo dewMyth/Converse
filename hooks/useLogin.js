@@ -2,6 +2,8 @@ import {useState} from 'react';
 import {baseUrl} from '../baseUrl';
 import {useAuthContext} from './useAuthContext';
 
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 export const useLogin = () => {
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -9,15 +11,19 @@ export const useLogin = () => {
   const {dispatch} = useAuthContext();
 
   const login = async (username, mobileNo) => {
+    const newUser = {username, mobileNo};
     setIsLoading(true);
     setError(null);
+
+    console.log(baseUrl + '/user/create');
+    console.log(newUser);
 
     const response = await fetch(baseUrl + '/user/create', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({username, mobileNo}),
+      body: JSON.stringify(newUser),
     });
 
     console.log('response =>', response);
@@ -29,11 +35,12 @@ export const useLogin = () => {
     const {user} = json;
 
     if (!response.ok) {
-      setError(json.msg);
+      setError(json.error);
       setIsLoading(false);
       return;
     }
     if (response.ok) {
+      setError(json.error);
       //save the user to the async storage
       const jsonValue = JSON.stringify(user);
       await AsyncStorage.setItem('user', jsonValue);

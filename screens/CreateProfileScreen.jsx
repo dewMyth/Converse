@@ -79,12 +79,11 @@ const CreateProfileScreen = ({navigation, route}) => {
   };
 
   const onHandleNext = async () => {
-    const user = {
-      username: username,
-      mobileNo: mobileNo,
-    };
-
-    await login(user);
+    try {
+      await login(username, mobileNo);
+    } catch (err) {
+      alert(err);
+    }
   };
 
   return (

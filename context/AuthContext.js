@@ -29,31 +29,24 @@ export const authReducer = (state, action) => {
 export const AuthContextProvider = ({children}) => {
   const [state, dispatch] = useReducer(authReducer, initialState);
 
+  console.log('AuthContext State', state);
+
   useEffect(() => {
-    // Method to get json value from async storage
     const getData = async () => {
       try {
         const jsonValue = await AsyncStorage.getItem('user');
         return jsonValue != null ? JSON.parse(jsonValue) : null;
       } catch (e) {
-        console.log('error in getData =>', e);
+        // error reading value
       }
     };
 
-    const user = getData().then(response => {
-      console.log('response before set as user in AuthContext =>', response);
-      return value;
+    getData().then(user => {
+      if (user) {
+        dispatch({type: 'LOGIN', payload: user});
+      }
     });
-
-    if (user) {
-      dispatch({
-        type: 'LOGIN',
-        payload: user,
-      });
-    }
   }, []);
-
-  console.log('AuthContext State', state);
 
   return (
     <AuthContext.Provider value={{...state, dispatch}}>
