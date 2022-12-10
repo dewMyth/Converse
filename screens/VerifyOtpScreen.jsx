@@ -4,11 +4,15 @@ import {TextInput, HelperText, Portal} from 'react-native-paper';
 
 import VerificationCompleteDialog from '../components/VerificationCompleteDialog';
 
+import {baseUrl} from '../baseUrl';
+
 const VerifyOtpScreen = ({navigation, route}) => {
   const {mobileNo} = route.params;
   const otpRef = useRef();
   const [otp, setOtp] = useState(0);
   const [visible, setVisible] = useState(false);
+  const [error, setError] = useState(false);
+  const [errorMsg, setErrorMsg] = useState('');
   const hideDialog = () => setVisible(false);
 
   useLayoutEffect(() => {
@@ -20,6 +24,39 @@ const VerifyOtpScreen = ({navigation, route}) => {
   const onVerificationComplete = () => {
     setVisible(false);
     navigation.navigate('CreateProfile', {mobileNo: mobileNo});
+  };
+
+  const checkVerification = async (mobileNo, otp) => {
+    const credentials = {
+      countryCode: '94',
+      mobileNo: mobileNo,
+      otp: otp,
+    };
+
+    console.log('credentials =>', JSON.stringify(credentials));
+    console.log('url =>', baseUrl + '/auth/verify-otp');
+
+    const response = await fetch(baseUrl + '/auth/verify-otp', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(credentials),
+    });
+
+    console.log('response =>', response);
+
+    const json = await response.json();
+
+    console.log('json =>', json);
+
+    if (!response.ok) {
+      setError(true);
+      setErrorMsg(json.message);
+    }
+    if (response.ok) {
+      setVisible(true);
+    }
   };
 
   return (
@@ -53,10 +90,15 @@ const VerifyOtpScreen = ({navigation, route}) => {
             onChangeText={otp => {
               setOtp(otp);
               if (otp.length === 6) {
-                setVisible(true);
+                checkVerification(mobileNo, otp);
               }
-            }}
-          />
+            }}></TextInput>
+          <HelperText
+            style={{marginHorizontal: '18%'}}
+            type="error"
+            visible={error}>
+            {errorMsg ? errorMsg : 'Something Wrong!'}
+          </HelperText>
         </View>
         <View style={styles.bottomContainer}>
           <Text style={styles.bottom}>Didn't receive a code?</Text>
