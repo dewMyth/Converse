@@ -12,10 +12,18 @@ import HomeScreen from './screens/HomeScreen';
 
 import {useAuthContext} from './hooks/useAuthContext';
 
+import SplashScreen from 'react-native-splash-screen';
+
 const App = () => {
   const Stack = createNativeStackNavigator();
 
   const {user} = useAuthContext();
+
+  useEffect(() => {
+    setTimeout(() => {
+      SplashScreen.hide();
+    }, 700);
+  }, []);
 
   return (
     <>
