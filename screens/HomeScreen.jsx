@@ -7,12 +7,13 @@ import {View} from 'react-native';
 
 import Topbar from '../components/Topbar';
 import Chats from './Chats';
+import Contacts from './Contacts';
 
 const ChatsRoute = () => <Chats />;
 
 const StatusRoute = () => <Text>Status</Text>;
 
-const ContactsRoute = () => <Text>Contacts</Text>;
+const ContactsRoute = () => <Contacts />;
 
 const HomeScreen = ({navigation}) => {
   const [index, setIndex] = useState(0);
