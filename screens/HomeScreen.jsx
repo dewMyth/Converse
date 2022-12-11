@@ -52,7 +52,7 @@ const HomeScreen = ({navigation}) => {
         onIndexChange={setIndex}
         renderScene={renderScene}
         barStyle={{
-          backgroundColor: '#fff',
+          backgroundColor: '#fffbff',
           height: 70,
           borderTopWidth: 1,
           borderTopColor: '#E5E5E5',
@@ -86,7 +86,7 @@ const styles = {
     position: 'absolute',
     margin: 16,
     right: 0,
-    bottom: 60,
+    bottom: 70,
   },
 };
 

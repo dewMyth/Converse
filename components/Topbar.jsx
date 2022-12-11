@@ -7,7 +7,7 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 const Topbar = () => {
   return (
     <>
-      <StatusBar barStyle="dark-content" backgroundColor="#fff" />
+      <StatusBar barStyle="dark-content" backgroundColor="#fffbff" />
       <View style={styles.container}>
         <Appbar.Header style={styles.appBar}>
           <View style={styles.title}>
@@ -49,7 +49,7 @@ const styles = StyleSheet.create({
   },
 
   appBar: {
-    backgroundColor: '#fff',
+    backgroundColor: '#fffbff',
     display: 'flex',
     flexDirection: 'row',
     height: 80,
