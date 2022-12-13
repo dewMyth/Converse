@@ -52,6 +52,7 @@ const HomeScreen = ({navigation}) => {
         navigationState={{index, routes}}
         onIndexChange={setIndex}
         renderScene={renderScene}
+        sceneAnimationEnabled={true}
         barStyle={{
           backgroundColor: '#fffbff',
           height: 70,
