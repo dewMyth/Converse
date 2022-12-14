@@ -27,6 +27,15 @@ const Contacts = () => {
           .then(res => res.json())
           .then(data => {
             setContacts(data.myContacts);
+            // Display the contact name by user saved name (contact.displayName)
+            for (let contact of contacts) {
+              for (let myContact of data.myContacts) {
+                if (contact.phoneNumbers.length === 0) continue;
+                if (contact.phoneNumbers[0].number === myContact.mobileNo) {
+                  myContact.username = contact.displayName;
+                }
+              }
+            }
             setLoading(false);
           })
           .catch(err => console.log(err));
