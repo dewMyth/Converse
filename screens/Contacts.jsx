@@ -1,11 +1,11 @@
 import {View, Text, FlatList, StyleSheet, Image} from 'react-native';
 import React, {useEffect, useState} from 'react';
 
-import {ActivityIndicator} from 'react-native-paper';
-
 import MyContacts from 'react-native-contacts';
 
 import {baseUrl} from '../baseUrl';
+import Skeleton from '../components/Skeleton';
+import ContactsLoadingSkeleton from '../components/ContactsLoadingSkeleton';
 
 const Contacts = () => {
   const [contacts, setContacts] = useState([]);
@@ -50,8 +50,8 @@ const Contacts = () => {
             <View style={styles.usernameContainer}>
               <Text style={styles.username}>{contact.item.username}</Text>
             </View>
-            <View style={styles.lastMsgContainer}>
-              <Text style={styles.lastMsg}> {contact.item.mobileNo} </Text>
+            <View style={styles.mobileNoContainer}>
+              <Text style={styles.mobileNo}> {contact.item.mobileNo} </Text>
             </View>
           </View>
         </View>
@@ -62,9 +62,15 @@ const Contacts = () => {
   return (
     <>
       {loading ? (
-        <View style={styles.loadingContainer}>
-          <ActivityIndicator />
-        </View>
+        <>
+          <ContactsLoadingSkeleton />
+          <ContactsLoadingSkeleton />
+          <ContactsLoadingSkeleton />
+          <ContactsLoadingSkeleton />
+          <ContactsLoadingSkeleton />
+          <ContactsLoadingSkeleton />
+          <ContactsLoadingSkeleton />
+        </>
       ) : (
         <FlatList
           data={contacts}
@@ -78,13 +84,6 @@ const Contacts = () => {
 };
 
 const styles = StyleSheet.create({
-  loadingContainer: {
-    display: 'flex',
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-
   container: {
     display: 'flex',
     flexDirection: 'row',
@@ -117,11 +116,11 @@ const styles = StyleSheet.create({
     color: '#21005C',
     paddingLeft: 5,
   },
-  lastMsgContainer: {
+  mobileNoContainer: {
     // flex: 1,
     marginBottom: 5,
   },
-  lastMsg: {
+  mobileNo: {
     fontSize: 16,
     fontFamily: 'Nunito-Regular',
   },
