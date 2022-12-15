@@ -79,6 +79,7 @@ const Contacts = () => {
           <ContactsLoadingSkeleton />
           <ContactsLoadingSkeleton />
           <ContactsLoadingSkeleton />
+          <ContactsLoadingSkeleton />
         </>
       ) : (
         <FlatList
