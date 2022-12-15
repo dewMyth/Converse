@@ -7,6 +7,8 @@ import {baseUrl} from '../baseUrl';
 import Skeleton from '../components/Skeleton';
 import ContactsLoadingSkeleton from '../components/ContactsLoadingSkeleton';
 
+import Contact from '../components/Contact';
+
 const Contacts = () => {
   const [contacts, setContacts] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -44,28 +46,7 @@ const Contacts = () => {
   }, []);
 
   const renderContacts = contact => {
-    return (
-      <>
-        <View style={styles.container}>
-          <View style={styles.imageContainer}>
-            <Image
-              source={{
-                uri: 'https://www.pngitem.com/pimgs/m/146-1468479_my-profile-icon-blank-profile-picture-circle-hd.png',
-              }}
-              style={styles.img}
-            />
-          </View>
-          <View style={styles.textContainer}>
-            <View style={styles.usernameContainer}>
-              <Text style={styles.username}>{contact.item.username}</Text>
-            </View>
-            <View style={styles.mobileNoContainer}>
-              <Text style={styles.mobileNo}> {contact.item.mobileNo} </Text>
-            </View>
-          </View>
-        </View>
-      </>
-    );
+    return <Contact contact={contact} />;
   };
 
   return (
