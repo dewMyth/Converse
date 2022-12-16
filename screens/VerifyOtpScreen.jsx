@@ -1,6 +1,6 @@
 import {View, Text, StyleSheet} from 'react-native';
 import React, {useLayoutEffect, useState, useRef} from 'react';
-import {TextInput, HelperText, Portal} from 'react-native-paper';
+import {TextInput, HelperText, Portal, Button} from 'react-native-paper';
 
 import VerificationCompleteDialog from '../components/VerificationCompleteDialog';
 
@@ -87,18 +87,21 @@ const VerifyOtpScreen = ({navigation, route}) => {
             mode="outlined"
             onLayout={() => otpRef.current.focus()}
             keyboardType="numeric"
-            onChangeText={otp => {
-              setOtp(otp);
-              if (otp.length === 6) {
-                checkVerification(mobileNo, otp);
-              }
-            }}></TextInput>
+            onChangeText={otp => setOtp(otp)}></TextInput>
           <HelperText
             style={{marginHorizontal: '18%'}}
             type="error"
             visible={error}>
             {errorMsg ? errorMsg : 'Something Wrong!'}
           </HelperText>
+        </View>
+        <View style={styles.btnContainer}>
+          <Button
+            mode="contained"
+            style={styles.btn}
+            onPress={() => checkVerification(mobileNo, otp)}>
+            VERIFY
+          </Button>
         </View>
         <View style={styles.bottomContainer}>
           <Text style={styles.bottom}>Didn't receive a code?</Text>
@@ -163,6 +166,12 @@ const styles = StyleSheet.create({
   bottom: {
     fontFamily: 'Nunito-Regular',
     fontSize: 14,
+  },
+  btn: {
+    backgroundColor: '#21005C',
+    borderRadius: 5,
+    width: '50%',
+    alignSelf: 'center',
   },
 });
 
