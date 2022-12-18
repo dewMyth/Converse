@@ -49,7 +49,7 @@ const HomeScreen = ({navigation}) => {
       case 'contacts':
         return <Contacts navigation={navigation} />;
       case 'chats':
-        return <Chats />;
+        return <Chats navigation={navigation} />;
     }
   };
 
