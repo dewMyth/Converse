@@ -51,7 +51,11 @@ const Contact = ({contact, navigation}) => {
       setErrorMsg(json.message);
     }
     if (response.ok) {
-      navigation.navigate('Conversation', {contact: contactDetails});
+      navigation.navigate('Conversation', {
+        contact: contactDetails,
+        profilePictureFromFS: profilePictureFromFS,
+        conversationId: json._id,
+      });
     }
   };
 
