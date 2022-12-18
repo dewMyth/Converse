@@ -6,7 +6,7 @@ import ContactsLoadingSkeleton from '../components/ContactsLoadingSkeleton';
 
 import Contact from '../components/Contact';
 
-const Contacts = () => {
+const Contacts = ({navigation}) => {
   const [contacts, setContacts] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -43,7 +43,7 @@ const Contacts = () => {
   }, []);
 
   const renderContacts = contact => {
-    return <Contact contact={contact} />;
+    return <Contact contact={contact} navigation={navigation} />;
   };
 
   return (

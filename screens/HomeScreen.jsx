@@ -38,11 +38,20 @@ const HomeScreen = ({navigation}) => {
     },
   ]);
 
-  const renderScene = BottomNavigation.SceneMap({
-    chats: ChatsRoute,
-    status: StatusRoute,
-    contacts: ContactsRoute,
-  });
+  // const renderScene = BottomNavigation.SceneMap({
+  //   chats: ChatsRoute,
+  //   status: StatusRoute,
+  //   contacts: ContactsRoute,
+  // });
+
+  renderScene = ({route, jumpTo}) => {
+    switch (route.key) {
+      case 'contacts':
+        return <Contacts navigation={navigation} />;
+      case 'chats':
+        return <Chats />;
+    }
+  };
 
   return (
     <>

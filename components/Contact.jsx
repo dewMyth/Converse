@@ -3,16 +3,23 @@ import React, {useEffect, useState} from 'react';
 
 import storage from '@react-native-firebase/storage';
 import {TouchableRipple} from 'react-native-paper';
+import {baseUrl} from '../baseUrl';
 
-const Contact = ({contact}) => {
+import {useAuthContext} from '../hooks/useAuthContext';
+
+const Contact = ({contact, navigation}) => {
+  const {user} = useAuthContext();
   const [profilePictureFromFS, setProfilePictureFromFS] = useState(null);
+  const [error, setError] = useState(false);
+  const [errorMsg, setErrorMsg] = useState('');
+
+  const [contactDetails, setContactDetails] = useState(contact.item);
 
   useEffect(() => {
     const getImageFromFSStorage = async () => {
-      console.log(contact.item);
-      if (contact?.item.profilePicture) {
+      if (contactDetails?.profilePicture) {
         const url = await storage()
-          .ref(contact?.item.profilePicture)
+          .ref(contactDetails?.profilePicture)
           .getDownloadURL();
         setProfilePictureFromFS(url);
         console.log(url);
@@ -21,10 +28,37 @@ const Contact = ({contact}) => {
     getImageFromFSStorage();
   }, []);
 
+  const onPressContact = async () => {
+    const response = await fetch(baseUrl + '/message/create-new-conversation', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        senderId: user._id,
+        receiverId: contactDetails._id,
+      }),
+    });
+
+    console.log('response =>', response);
+
+    const json = await response.json();
+
+    console.log('json =>', json);
+
+    if (!response.ok) {
+      setError(true);
+      setErrorMsg(json.message);
+    }
+    if (response.ok) {
+      navigation.navigate('Conversation', {contact: contactDetails});
+    }
+  };
+
   return (
     <>
       <TouchableRipple
-        onPress={() => console.log('Pressed')}
+        onPress={() => onPressContact()}
         rippleColor="rgba(0, 0, 0, .32)"
         style={{paddingTop: 10}}>
         <View style={styles.container}>

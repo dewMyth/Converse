@@ -9,6 +9,7 @@ import PhoneNoScreen from './screens/PhoneNoScreen';
 import VerifyOtpScreen from './screens/VerifyOtpScreen';
 import CreateProfileScreen from './screens/CreateProfileScreen';
 import HomeScreen from './screens/HomeScreen';
+import ConversationScreen from './screens/ConversationScreen';
 
 import {useAuthContext} from './hooks/useAuthContext';
 
@@ -34,6 +35,7 @@ const App = () => {
         {user ? (
           <>
             <Stack.Screen name="Home" component={HomeScreen} />
+            <Stack.Screen name="Conversation" component={ConversationScreen} />
           </>
         ) : (
           <>
