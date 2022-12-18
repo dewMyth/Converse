@@ -1,10 +1,7 @@
-import {View, Text, FlatList, StyleSheet, Image} from 'react-native';
+import {FlatList} from 'react-native';
 import React, {useEffect, useState} from 'react';
-
 import MyContacts from 'react-native-contacts';
-
 import {baseUrl} from '../baseUrl';
-import Skeleton from '../components/Skeleton';
 import ContactsLoadingSkeleton from '../components/ContactsLoadingSkeleton';
 
 import Contact from '../components/Contact';
@@ -67,54 +64,10 @@ const Contacts = () => {
           data={contacts}
           renderItem={renderContacts}
           keyExtractor={contact => contact._id}
-          style={{marginTop: 20}}
         />
       )}
     </>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    display: 'flex',
-    flexDirection: 'row',
-    flex: 1,
-    paddingHorizontal: 10,
-    marginBottom: 10,
-  },
-  imageContainer: {
-    flex: 1,
-    alignItems: 'center',
-  },
-  img: {
-    width: 60,
-    height: 60,
-    borderRadius: 50,
-  },
-  textContainer: {
-    marginLeft: 10,
-    flex: 4,
-    flexDirection: 'column',
-    justifyContent: 'center',
-  },
-  usernameContainer: {
-    marginBottom: 5,
-    marginTop: 5,
-  },
-  username: {
-    fontSize: 20,
-    fontFamily: 'Nunito-Bold',
-    color: '#21005C',
-    paddingLeft: 5,
-  },
-  mobileNoContainer: {
-    // flex: 1,
-    marginBottom: 5,
-  },
-  mobileNo: {
-    fontSize: 16,
-    fontFamily: 'Nunito-Regular',
-  },
-});
 
 export default Contacts;

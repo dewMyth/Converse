@@ -1,7 +1,8 @@
-import {View, Text, StyleSheet, Image} from 'react-native';
+import {View, Text, StyleSheet, Image, TouchableOpacity} from 'react-native';
 import React, {useEffect, useState} from 'react';
 
 import storage from '@react-native-firebase/storage';
+import {TouchableRipple} from 'react-native-paper';
 
 const Contact = ({contact}) => {
   const [profilePictureFromFS, setProfilePictureFromFS] = useState(null);
@@ -22,28 +23,34 @@ const Contact = ({contact}) => {
 
   return (
     <>
-      <View style={styles.container}>
-        <View style={styles.imageContainer}>
-          <Image
-            source={
-              profilePictureFromFS
-                ? {uri: profilePictureFromFS}
-                : {
-                    uri: 'https://www.pngitem.com/pimgs/m/146-1468479_my-profile-icon-blank-profile-picture-circle-hd.png',
-                  }
-            }
-            style={styles.img}
-          />
-        </View>
-        <View style={styles.textContainer}>
-          <View style={styles.usernameContainer}>
-            <Text style={styles.username}>{contact.item.username}</Text>
+      <TouchableRipple
+        onPress={() => console.log('Pressed')}
+        rippleColor="rgba(0, 0, 0, .32)"
+        style={{paddingTop: 10}}>
+        <View style={styles.container}>
+          <View style={styles.imageContainer}>
+            <Image
+              source={
+                profilePictureFromFS
+                  ? {uri: profilePictureFromFS}
+                  : {
+                      uri: 'https://www.pngitem.com/pimgs/m/146-1468479_my-profile-icon-blank-profile-picture-circle-hd.png',
+                    }
+              }
+              style={styles.img}
+            />
           </View>
-          <View style={styles.mobileNoContainer}>
-            <Text style={styles.mobileNo}> {contact.item.mobileNo} </Text>
+
+          <View style={styles.textContainer}>
+            <View style={styles.usernameContainer}>
+              <Text style={styles.username}>{contact.item.username}</Text>
+            </View>
+            <View style={styles.mobileNoContainer}>
+              <Text style={styles.mobileNo}> {contact.item.mobileNo} </Text>
+            </View>
           </View>
         </View>
-      </View>
+      </TouchableRipple>
     </>
   );
 };
@@ -59,6 +66,7 @@ const styles = StyleSheet.create({
   imageContainer: {
     flex: 1,
     alignItems: 'center',
+    alignSelf: 'center',
   },
   img: {
     width: 60,
