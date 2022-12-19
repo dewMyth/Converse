@@ -16,12 +16,15 @@ import Message from '../components/Message';
 
 import {useAuthContext} from '../hooks/useAuthContext';
 
+import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons';
+
 const ConversationScreen = ({navigation, route}) => {
   const {contact, conversationId, profilePictureFromFS} = route.params;
 
   const [messages, setMessages] = useState([]);
   const [error, setError] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
+  const [message, setMessage] = useState('');
 
   const scrollViewRef = useRef();
   const height = useHeaderHeight();
@@ -57,6 +60,32 @@ const ConversationScreen = ({navigation, route}) => {
     };
     getMessagesByConversationId();
   }, [conversationId]);
+
+  const handleSendMsg = async () => {
+    const response = await fetch(baseUrl + '/message/create-new-message', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        senderId: user._id,
+        receiverId: contact._id,
+        conversationId: conversationId,
+        text: message,
+      }),
+    });
+
+    const json = await response.json();
+
+    if (!response.ok) {
+      setError(true);
+      setErrorMsg(json.message);
+    }
+    if (response.ok) {
+      setMessages([...messages, json]);
+      setMessage('');
+    }
+  };
 
   return (
     <>
@@ -106,32 +135,36 @@ const ConversationScreen = ({navigation, route}) => {
               })}
             </ScrollView>
           </View>
+          <KeyboardAvoidingView
+            style={{position: 'absolute', left: 0, right: 0, bottom: 5}}
+            behavior="position"
+            keyboardVerticalOffset={height - 300}>
+            <View style={styles.chatBottomContainer}>
+              <View style={styles.textInputContainer}>
+                <TextInput
+                  value={message}
+                  style={styles.textInput}
+                  placeholder="Message"
+                  underlineStyle={{backgroundColor: '#fff'}}
+                  onChangeText={message => setMessage(message)}
+                />
+              </View>
+              <View style={styles.sendBtnContainer}>
+                <Button
+                  mode="contained"
+                  style={styles.sendBtn}
+                  onPress={e => handleSendMsg(e)}>
+                  <MaterialCommunityIcon
+                    name="send-outline"
+                    size={14}
+                    color="#fff"
+                  />
+                </Button>
+              </View>
+            </View>
+          </KeyboardAvoidingView>
         </ImageBackground>
       </View>
-
-      {/* <KeyboardAvoidingView
-        style={{position: 'absolute', left: 0, right: 0, bottom: 0}}
-        behavior="position"
-        keyboardVerticalOffset={height - 300}>
-        <View style={styles.chatBottom}>
-          <View style={styles.textInput}>
-            <TextInput
-              label="Your Message"
-              value={msg}
-              mode="outlined"
-              onChangeText={msg => setMsg(msg)}
-            />
-          </View>
-          <View style={styles.sendBtn}>
-            <Button
-              icon="send"
-              mode="contained"
-              buttonColor="#da0037"
-              onPress={e => handleSendMsg(e)}
-            />
-          </View>
-        </View>
-      </KeyboardAvoidingView> */}
     </>
   );
 };
@@ -140,7 +173,6 @@ const styles = {
   container: {
     flex: 1,
     flexDirection: 'column',
-    backgroundColor: 'red',
   },
   image: {
     flex: 1,
@@ -171,21 +203,34 @@ const styles = {
     marginTop: 20,
     marginBottom: 55,
   },
-  chatBottom: {
+  chatBottomContainer: {
     display: 'flex',
     flexDirection: 'row',
     backgroundColor: 'white',
     alignItems: 'center',
-    paddingHorizontal: 10,
     elevation: 10,
+    borderRadius: 10,
+    marginHorizontal: 10,
+    height: 60,
+  },
+  textInputContainer: {
+    flex: 8,
+    marginHorizontal: 10,
+    marginVertical: 5,
   },
   textInput: {
-    flex: 6,
-    marginHorizontal: 10,
+    backgroundColor: 'white',
+    outline: 'none',
+  },
+  sendBtnContainer: {
+    flex: 2,
+    marginRight: 10,
+    alignItems: 'center',
   },
   sendBtn: {
-    flex: 1,
-    marginHorizontal: 10,
+    backgroundColor: '#21005C',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 };
 

@@ -35,6 +35,7 @@ const styles = StyleSheet.create({
     padding: 10,
     borderRadius: 20,
     backgroundColor: '#21005C',
+    maxWidth: '80%',
   },
 
   messageOwnText: {
@@ -42,6 +43,7 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     backgroundColor: 'white',
     color: '#21005C',
+    maxWidth: '80%',
   },
 
   msgBody: {

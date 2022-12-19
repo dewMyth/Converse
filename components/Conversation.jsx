@@ -137,7 +137,11 @@ const Conversation = ({chat, navigation}) => {
             </View>
             <View style={styles.lastMsgContainer}>
               <Text style={styles.lastMsg}>
-                {latestMessage ? latestMessage : <DefaultNullText />}
+                {latestMessage ? (
+                  `${latestMessage.slice(0, 30)}...`
+                ) : (
+                  <DefaultNullText />
+                )}
               </Text>
             </View>
           </View>
@@ -175,20 +179,15 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     justifyContent: 'center',
   },
-  usernameContainer: {
-    // flex: 1,
-    marginBottom: 5,
-    marginTop: 5,
-  },
+  usernameContainer: {},
   username: {
     fontSize: 20,
     fontFamily: 'Nunito-Bold',
     color: '#21005C',
-    paddingLeft: 5,
   },
   lastMsgContainer: {
-    // flex: 1,
-    marginBottom: 5,
+    overflow: 'hidden',
+    // marginBottom: 5,
   },
   lastMsg: {
     fontSize: 16,

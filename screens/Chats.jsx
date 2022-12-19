@@ -2,6 +2,7 @@ import {View, Text, StyleSheet, ScrollView} from 'react-native';
 import React, {useEffect, useState} from 'react';
 
 import Conversation from '../components/Conversation';
+import ContactsLoadingSkeleton from '../components/ContactsLoadingSkeleton';
 
 import {useAuthContext} from '../hooks/useAuthContext';
 
@@ -13,12 +14,11 @@ const Chats = ({navigation}) => {
   const [chats, setChats] = useState([]);
   const [error, setError] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const getChatsOfaUser = async () => {
-      console.log(
-        baseUrl + '/message/get-conversation-by-one-user/' + user._id,
-      );
+      setLoading(true);
       const response = await fetch(
         baseUrl + '/message/get-conversation-by-one-user/' + user._id,
         {
@@ -38,6 +38,7 @@ const Chats = ({navigation}) => {
         setErrorMsg(json.message);
       }
       if (response.ok) {
+        setLoading(false);
         setChats(json);
       }
     };
@@ -47,11 +48,20 @@ const Chats = ({navigation}) => {
 
   return (
     <>
-      <ScrollView style={styles.container}>
-        {chats.map(chat => (
-          <Conversation key={chat._id} chat={chat} navigation={navigation} />
-        ))}
-      </ScrollView>
+      {loading ? (
+        <>
+          <ContactsLoadingSkeleton />
+          <ContactsLoadingSkeleton />
+          <ContactsLoadingSkeleton />
+          <ContactsLoadingSkeleton />
+        </>
+      ) : (
+        <ScrollView style={styles.container}>
+          {chats.map(chat => (
+            <Conversation key={chat._id} chat={chat} navigation={navigation} />
+          ))}
+        </ScrollView>
+      )}
     </>
   );
 };
