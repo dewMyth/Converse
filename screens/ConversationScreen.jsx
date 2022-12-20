@@ -18,26 +18,39 @@ import {useAuthContext} from '../hooks/useAuthContext';
 
 import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 
+import GlobalState from '../GlobalState';
+
 const ConversationScreen = ({navigation, route}) => {
-  const {contact, conversationId, profilePictureFromFS} = route.params;
+  const {contact, conversation, profilePictureFromFS, friendId} = route.params;
 
   const [messages, setMessages] = useState([]);
   const [error, setError] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
   const [message, setMessage] = useState('');
+  const [arrivalMessage, setArrivalMessage] = useState(null);
 
   const scrollViewRef = useRef();
   const height = useHeaderHeight();
 
   const {user} = useAuthContext();
 
+  const socket = GlobalState.socket;
+
+  useEffect(() => {
+    socket.emit('addUser', user._id);
+  }, [user]);
+
   useEffect(() => {
     const getMessagesByConversationId = async () => {
       console.log(
-        baseUrl + '/message/get-messages-by-conversation-id/' + conversationId,
+        baseUrl +
+          '/message/get-messages-by-conversation-id/' +
+          conversation._id,
       );
       const response = await fetch(
-        baseUrl + '/message/get-messages-by-conversation-id/' + conversationId,
+        baseUrl +
+          '/message/get-messages-by-conversation-id/' +
+          conversation._id,
         {
           method: 'GET',
           headers: {
@@ -59,9 +72,33 @@ const ConversationScreen = ({navigation, route}) => {
       }
     };
     getMessagesByConversationId();
-  }, [conversationId]);
+  }, [conversation._id]);
+
+  // Receive message from socket server
+  useEffect(() => {
+    socket.on('getMessage', message => {
+      console.log(message);
+      setArrivalMessage({
+        senderId: message.senderId,
+        text: message.text,
+        createdAt: Date.now(),
+      });
+    });
+  }, []);
+
+  useEffect(() => {
+    arrivalMessage &&
+      conversation?.members.includes(arrivalMessage.senderId) &&
+      setMessages(prev => [...prev, arrivalMessage]);
+  }, [arrivalMessage, conversation]);
 
   const handleSendMsg = async () => {
+    socket.emit('sendMessage', {
+      senderId: user._id,
+      receiverId: friendId,
+      text: message,
+    });
+
     const response = await fetch(baseUrl + '/message/create-new-message', {
       method: 'POST',
       headers: {
@@ -70,7 +107,7 @@ const ConversationScreen = ({navigation, route}) => {
       body: JSON.stringify({
         senderId: user._id,
         receiverId: contact._id,
-        conversationId: conversationId,
+        conversationId: conversation._id,
         text: message,
       }),
     });

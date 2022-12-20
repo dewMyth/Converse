@@ -15,6 +15,9 @@ import {useAuthContext} from './hooks/useAuthContext';
 
 import SplashScreen from 'react-native-splash-screen';
 
+import io from 'socket.io-client';
+import GlobalState from './GlobalState';
+
 const App = () => {
   const Stack = createNativeStackNavigator();
 
@@ -24,6 +27,11 @@ const App = () => {
     setTimeout(() => {
       SplashScreen.hide();
     }, 700);
+  }, []);
+
+  useEffect(() => {
+    const socket = io('ws://converse-server.onrender.com');
+    GlobalState.socket = socket;
   }, []);
 
   return (

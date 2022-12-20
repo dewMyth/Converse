@@ -108,7 +108,8 @@ const Conversation = ({chat, navigation}) => {
       navigation.navigate('Conversation', {
         contact: friend,
         profilePictureFromFS: profilePictureFromFS,
-        conversationId: json._id,
+        conversation: chat,
+        friendId: friend._id,
       });
     }
   };
