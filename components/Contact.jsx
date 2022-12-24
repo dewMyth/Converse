@@ -54,7 +54,7 @@ const Contact = ({contact, navigation}) => {
       navigation.navigate('Conversation', {
         contact: contactDetails,
         profilePictureFromFS: profilePictureFromFS,
-        conversationId: json._id,
+        conversation: json,
       });
     }
   };

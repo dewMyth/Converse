@@ -21,6 +21,8 @@ import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIc
 import GlobalState from '../GlobalState';
 
 const ConversationScreen = ({navigation, route}) => {
+  console.log(conversation);
+
   const {contact, conversation, profilePictureFromFS, friendId} = route.params;
 
   const [messages, setMessages] = useState([]);
@@ -72,7 +74,7 @@ const ConversationScreen = ({navigation, route}) => {
       }
     };
     getMessagesByConversationId();
-  }, [conversation._id]);
+  }, [conversation]);
 
   // Receive message from socket server
   useEffect(() => {
